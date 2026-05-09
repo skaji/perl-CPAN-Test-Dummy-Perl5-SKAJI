@@ -1,6 +1,6 @@
 Revision history for CPAN-Test-Dummy-Perl5-SKAJI
 
-v0.0.10  2026-05-09
+v0.0.11  2026-05-09
   - Use GitHub Artifact Attestations again; see https://github.com/skaji/perl-CPAN-Test-Dummy-Perl5-SKAJI/attestations
 
 v0.0.8  2026-05-09
