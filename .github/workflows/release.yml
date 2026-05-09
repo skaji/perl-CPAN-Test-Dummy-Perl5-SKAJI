@@ -2,10 +2,8 @@ name: release
 
 on:
   push:
-    branches:
-      - main
-    # tags:
-    #   - '*'
+    tags:
+      - '*'
 
 jobs:
   release:
@@ -35,8 +33,8 @@ jobs:
           DIST_TARBALL=${{ steps.variable.outputs.dist_name }}-${{ steps.variable.outputs.dist_version }}.tar.gz
           dzil build
           cosign sign-blob $DIST_TARBALL --bundle $DIST_TARBALL.sigstore.json --yes
-          # pause-upload.pl $DIST_TARBALL
-          # pause-upload.pl $DIST_TARBALL.sigstore.json
+          pause-upload.pl $DIST_TARBALL
+          pause-upload.pl $DIST_TARBALL.sigstore.json
           gh release create --repo ${{ github.repository }} ${{ github.ref }} $DIST_TARBALL $DIST_TARBALL.sigstore.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
