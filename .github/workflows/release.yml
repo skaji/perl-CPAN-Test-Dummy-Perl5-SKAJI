@@ -20,15 +20,14 @@ jobs:
         run: |
           curl -fsSL https://raw.githubusercontent.com/skaji/relocatable-perl/main/perl-install | bash -s $HOME/perl
           curl -fsSL https://raw.githubusercontent.com/skaji/cpm/main/cpm > $HOME/perl/bin/cpm
-          curl -fsSL https://gist.githubusercontent.com/skaji/296c8dc62027b5c1b4ca389e5f3fdc53/raw/2ad86b48f12f6a0e2a4b4e193de624042a59b65c/pause-upload.pl > $HOME/perl/bin/pause-upload.pl
-          chmod +x $HOME/perl/bin/cpm $HOME/perl/bin/pause-upload.pl
+          chmod +x $HOME/perl/bin/cpm
           echo $HOME/perl/bin >> $GITHUB_PATH
       - uses: actions/cache@v5
         with:
           path: ~/.perl-cpm/builds
           key: ${{ runner.os }}
       - name: Install authoring tools
-        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata HTTP::Tiny::Multipart Path::Tiny
+        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata https://github.com/skaji/perl-pause-upload.git
       - name: Prepare variables
         id: variable
         run: |
@@ -48,6 +47,7 @@ jobs:
           pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}
           pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
           gh release create --repo ${{ github.repository }} ${{ github.ref }} \
+            --notes ${{ ${{ steps.attest.outputs.attestation-url }} \
             ${{ steps.variable.outputs.dist_tarball }} \
             ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
         env:
