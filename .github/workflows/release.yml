@@ -25,7 +25,7 @@ jobs:
           echo $HOME/perl/bin >> $GITHUB_PATH
       - uses: actions/cache@v5
         with:
-          path: ${{ env.HOME }}/.perl-cpm/builds
+          path: ~/.perl-cpm/builds
           key: ${{ runner.os }}
       - name: Install authoring tools
         run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata HTTP::Tiny::Multipart Path::Tiny
@@ -41,11 +41,15 @@ jobs:
         id: attest
         with:
           subject-path: ${{ steps.variable.outputs.dist_tarball }}
-      - run: |
-          gh release create --repo ${{ github.repository }} ${{ github.ref }} ${{ steps.variable.outputs.dist_tarball }} ${{ steps.attest.outputs.bundle-path }}
+      - name: Release
+        run: |
+          cp -f ${{ steps.attest.outputs.bundle-path }} ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
+
+          pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}
+          pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
+          gh release create --repo ${{ github.repository }} ${{ github.ref }} \
+            ${{ steps.variable.outputs.dist_tarball }} \
+            ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Upload tarballs to PAUSE
-      #   run: pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}
-      #   env:
-      #     PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}
+          PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}
