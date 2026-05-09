@@ -1,5 +1,8 @@
 Revision history for CPAN-Test-Dummy-Perl5-SKAJI
 
+v0.0.6  2026-05-09
+  - Use actions/attest
+
 v0.0.5  2026-05-09
   - Use actions/attest
 

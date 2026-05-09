@@ -33,7 +33,7 @@ jobs:
           echo dist_tarball=$(jq -r .name META.json)-$(jq -r .version META.json).tar.gz >> $GITHUB_OUTPUT
       - name: Create artifacts
         run: dzil build
-      - uses: actions/attest@4
+      - uses: actions/attest@v4
         id: attest
         with:
           subject-path: ${{ steps.variable.outputs.dist_tarball }}
