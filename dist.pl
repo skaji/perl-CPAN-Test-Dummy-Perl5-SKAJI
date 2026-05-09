@@ -20,7 +20,7 @@ my @plugin = (
     'ReadmeAnyFromPod' => [ type => 'markdown', filename => 'README.md', location => 'root' ],
     'MetaProvides::Package' => [ inherit_version => 0, inherit_missing => 0 ],
     'PruneFiles' => [ filename => 'dist.pl', filename => 'README.md', match => '^(xt|author|maint|example|eg)/' ],
-    'GitHubREADME::Badge' => [ badges => 'github_actions/test.yml' ],
+    # 'GitHubREADME::Badge' => [ badges => 'github_actions/test.yml' ],
     'GenerateFile' => [ filename => 'Build.PL', content => "use Module::Build::Tiny;\nBuild_PL();" ],
     'MetaJSON' => [],
     'Metadata' => [ x_static_install => 1 ],

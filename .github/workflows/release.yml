@@ -1,0 +1,38 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: sigstore/cosign-installer@v4.1.2
+      - name: Install perl and cpm
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/skaji/relocatable-perl/main/perl-install | bash -s $HOME/perl
+          curl -fsSL https://raw.githubusercontent.com/skaji/cpm/main/cpm > $HOME/perl/bin/cpm
+          curl -fsSL https://gist.githubusercontent.com/skaji/296c8dc62027b5c1b4ca389e5f3fdc53/raw/2ad86b48f12f6a0e2a4b4e193de624042a59b65c/pause-upload.pl > $HOME/perl/bin/pause-upload.pl
+          chmod +x $HOME/perl/bin/cpm $HOME/perl/bin/pause-upload.pl
+          echo $HOME/perl/bin >> $GITHUB_PATH
+      - name: Install authoring tools
+        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata
+      - name: Prepare variables
+        id: variable
+        run: |
+          echo dist_name=$(jq -r .name META.json) >> $GITHUB_OUTPUT
+          echo dist_version=$(jq -r .version META.json) >> $GITHUB_OUTPUT
+      - name: Create artifacts
+        run: |
+          DIST_TARBALL=${{ steps.variable.outputs.dist_name }}-${{ steps.variable.outputs.dist_version }}.tar.gz
+          dzil build
+          cosign sign-blob $DIST_TARBALL --bundle $DIST_TARBALL.sigstore.json --yes
+          pause-upload.pl $DIST_TARBALL
+          pause-upload.pl $DIST_TARBALL.sigstore.json
+          gh release create --repo ${{ github.repository }} ${{ github.ref }} $DIST_TARBALL $DIST_TARBALL.sigstore.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}

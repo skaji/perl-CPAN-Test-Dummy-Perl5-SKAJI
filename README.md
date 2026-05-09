@@ -1,5 +1,3 @@
-[![Actions Status](https://github.com/skaji/perl-CPAN-Test-Dummy-Perl5-SKAJI/actions/workflows/test.yml/badge.svg)](https://github.com/skaji/perl-CPAN-Test-Dummy-Perl5-SKAJI/actions)
-
 # NAME
 
 CPAN::Test::Dummy::Perl5::SKAJI - a test dummy distribution
