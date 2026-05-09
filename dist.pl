@@ -37,5 +37,7 @@ my @plugin = (
 
 my @config = (
     name => 'CPAN-Test-Dummy-Perl5-SKAJI',
+    author => 'Shoichi Kaji <skaji@cpan.org>',
+    copyright_holder => 'Shoichi Kaji',
     [ @prereq, @plugin ],
 );
