@@ -11,10 +11,10 @@ my @prereq = (
 my @plugin = (
     'ExecDir' => [ dir => 'script' ],
     'Git::GatherDir' => [ exclude_filename => 'META.json' ],
-    'CopyFilesFromBuild' => [ copy => 'META.json' ],
+    'CopyFilesFromBuild' => [ copy => 'META.json', copy => 'Changes' ],
     'VersionFromMainModule' => [],
-    'ReversionOnRelease' => [ prompt => 1 ],
-    'NextRelease' => [ format => '%v  %{yyyy-MM-dd HH:mm:ss VVV}d%{ (TRIAL RELEASE)}T' ],
+    # 'ReversionOnRelease' => [ prompt => 1 ],
+    'NextRelease' => [ format => '%v  %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T' ],
     'Git::Check' => [ allow_dirty => 'Changes', allow_dirty => 'META.json' ],
     'GithubMeta' => [ issues => 1 ],
     'ReadmeAnyFromPod' => [ type => 'markdown', filename => 'README.md', location => 'root' ],
@@ -26,13 +26,13 @@ my @plugin = (
     'Metadata' => [ x_static_install => 1 ],
     'Git::Contributors' => [],
 
-    'CheckChangesHasContent' => [],
-    'ConfirmRelease' => [],
-    'UploadToCPAN' => [],
-    'CopyFilesFromRelease' => [ match => '\.pm$' ],
-    'Git::Commit' => [ commit_msg => '%v', allow_dirty => 'Changes', allow_dirty => 'META.json', allow_dirty_match => '\.pm$' ],
-    'Git::Tag' => [ tag_format => '%v', tag_message => '%v' ],
-    'Git::Push' => [],
+    # 'CheckChangesHasContent' => [],
+    # 'ConfirmRelease' => [],
+    # 'UploadToCPAN' => [],
+    # 'CopyFilesFromRelease' => [ match => '\.pm$' ],
+    # 'Git::Commit' => [ commit_msg => '%v', allow_dirty => 'Changes', allow_dirty => 'META.json', allow_dirty_match => '\.pm$' ],
+    # 'Git::Tag' => [ tag_format => '%v', tag_message => '%v' ],
+    # 'Git::Push' => [],
 );
 
 my @config = (
