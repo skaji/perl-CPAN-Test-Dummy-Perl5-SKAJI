@@ -1,4 +1,4 @@
-package CPAN::Test::Dummy::Perl5::SKAJI v0.0.7;
+package CPAN::Test::Dummy::Perl5::SKAJI v0.0.8;
 use v5.24;
 use warnings;
 use experimental qw(lexical_subs signatures);
