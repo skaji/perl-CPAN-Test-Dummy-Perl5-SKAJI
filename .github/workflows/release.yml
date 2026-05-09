@@ -41,8 +41,9 @@ jobs:
         run: |
           cp -f ${{ steps.attest.outputs.bundle-path }} ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
 
-          pause-upload.pl ${{ steps.variable.outputs.dist-tarball }}
-          pause-upload.pl ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
+          pause-upload \
+            ${{ steps.variable.outputs.dist-tarball }} \
+            ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
           gh release create --repo ${{ github.repository }} ${{ github.ref }} \
             --notes ${{ steps.attest.outputs.attestation-url }} \
             ${{ steps.variable.outputs.dist-tarball }} \
