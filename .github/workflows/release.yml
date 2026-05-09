@@ -30,26 +30,23 @@ jobs:
         run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata https://github.com/skaji/perl-pause-upload.git
       - name: Prepare variables
         id: variable
-        run: |
-          echo dist_name=$(jq -r .name META.json) >> $GITHUB_OUTPUT
-          echo dist_version=$(jq -r .version META.json) >> $GITHUB_OUTPUT
-          echo dist_tarball=$(jq -r .name META.json)-$(jq -r .version META.json).tar.gz >> $GITHUB_OUTPUT
+        run: echo dist-tarball=$(jq -r .name META.json)-$(jq -r .version META.json).tar.gz >> $GITHUB_OUTPUT
       - name: Create artifacts
         run: dzil build
       - uses: actions/attest@v4
         id: attest
         with:
-          subject-path: ${{ steps.variable.outputs.dist_tarball }}
+          subject-path: ${{ steps.variable.outputs.dist-tarball }}
       - name: Release
         run: |
-          cp -f ${{ steps.attest.outputs.bundle-path }} ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
+          cp -f ${{ steps.attest.outputs.bundle-path }} ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
 
-          pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}
-          pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
+          pause-upload.pl ${{ steps.variable.outputs.dist-tarball }}
+          pause-upload.pl ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
           gh release create --repo ${{ github.repository }} ${{ github.ref }} \
-            --notes ${{ ${{ steps.attest.outputs.attestation-url }} \
-            ${{ steps.variable.outputs.dist_tarball }} \
-            ${{ steps.variable.outputs.dist_tarball }}.sigstore.json
+            --notes ${{ steps.attest.outputs.attestation-url }} \
+            ${{ steps.variable.outputs.dist-tarball }} \
+            ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}
