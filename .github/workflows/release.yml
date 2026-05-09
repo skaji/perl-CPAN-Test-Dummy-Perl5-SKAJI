@@ -22,7 +22,7 @@ jobs:
           chmod +x $HOME/perl/bin/cpm $HOME/perl/bin/pause-upload.pl
           echo $HOME/perl/bin >> $GITHUB_PATH
       - name: Install authoring tools
-        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata
+        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata HTTP::Tiny::Multipart Path::Tiny
       - name: Prepare variables
         id: variable
         run: |
