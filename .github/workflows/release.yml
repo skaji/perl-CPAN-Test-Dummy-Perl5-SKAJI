@@ -11,6 +11,8 @@ jobs:
     permissions:
       id-token: write
       contents: write
+      attestations: write
+      artifact-metadata: write
     steps:
       - uses: actions/checkout@v6
       - uses: sigstore/cosign-installer@v4.1.2
@@ -28,14 +30,17 @@ jobs:
         run: |
           echo dist_name=$(jq -r .name META.json) >> $GITHUB_OUTPUT
           echo dist_version=$(jq -r .version META.json) >> $GITHUB_OUTPUT
+          echo dist_tarball=$(jq -r .name META.json)-$(jq -r .version META.json).tar.gz >> $GITHUB_OUTPUT
       - name: Create artifacts
-        run: |
-          DIST_TARBALL=${{ steps.variable.outputs.dist_name }}-${{ steps.variable.outputs.dist_version }}.tar.gz
-          dzil build
-          cosign sign-blob $DIST_TARBALL --bundle $DIST_TARBALL.sigstore.json --yes
-          pause-upload.pl $DIST_TARBALL
-          pause-upload.pl $DIST_TARBALL.sigstore.json
-          gh release create --repo ${{ github.repository }} ${{ github.ref }} $DIST_TARBALL $DIST_TARBALL.sigstore.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}
+        run: dzil build
+      - uses: actions/attest@4
+        id: attest
+        with:
+          subject-path: ${{ steps.variable.outputs.dist_tarball }}
+      - run: |
+          ls -al ${{ steps.attest.outputs.bundle-path }}
+          gh release create --repo ${{ github.repository }} ${{ github.ref }} ${{ steps.variable.outputs.dist_tarball }} ${{ steps.attest.outputs.bundle-path }}
+      # - name: Upload tarballs to PAUSE
+      #   run: pause-upload.pl ${{ steps.variable.outputs.dist_tarball }}
+      #   env:
+      #     PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}
