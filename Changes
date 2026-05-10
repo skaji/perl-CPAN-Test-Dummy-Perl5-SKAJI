@@ -1,5 +1,8 @@
 Revision history for CPAN-Test-Dummy-Perl5-SKAJI
 
+v0.0.13  2026-05-11
+  - Use skaji/action-generate-tarball
+
 v0.0.12  2026-05-10
   - Use skaji/action-pause-upload
 
