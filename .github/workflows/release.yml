@@ -38,9 +38,9 @@ jobs:
             ${{ steps.prepare.outputs.dist }}.tar.gz.sigstore.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - uses: skaji/action-pause-upload@v1
-      #   with:
-      #     files: |
-      #       ${{ steps.prepare.outputs.dist }}.tar.gz
-      #       ${{ steps.prepare.outputs.dist }}.tar.gz.sigstore.json
-      #     pause-token: ${{ secrets.PAUSE_TOKEN }}
+      - uses: skaji/action-pause-upload@v1
+        with:
+          files: |
+            ${{ steps.prepare.outputs.dist }}.tar.gz
+            ${{ steps.prepare.outputs.dist }}.tar.gz.sigstore.json
+          pause-token: ${{ secrets.PAUSE_TOKEN }}
