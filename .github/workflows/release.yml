@@ -27,27 +27,29 @@ jobs:
           path: ~/.perl-cpm/builds
           key: ${{ runner.os }}
       - name: Install authoring tools
-        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata https://github.com/skaji/perl-pause-upload.git
-      - name: Prepare variables
-        id: variable
-        run: echo dist-tarball=$(jq -r .name META.json)-$(jq -r .version META.json).tar.gz >> $GITHUB_OUTPUT
+        run: cpm install -g Dist::Milla Dist::Zilla::Plugin::MetaProvides::Package Dist::Zilla::Plugin::Metadata
       - name: Create artifacts
-        run: dzil build
+        id: artifact
+        run: |
+          dzil build
+          echo dist-tarball=$(jq -r '.name + "-" + .version' META.json).tar.gz >> $GITHUB_OUTPUT
       - uses: actions/attest@v4
         id: attest
         with:
-          subject-path: ${{ steps.variable.outputs.dist-tarball }}
-      - name: Release
+          subject-path: ${{ steps.artifact.outputs.dist-tarball }}
+      - name: Prepare sigstore.json
+        run: cp -f ${{ steps.attest.outputs.bundle-path }} ${{ steps.artifact.outputs.dist-tarball }}.sigstore.json
+      - name: Create release
         run: |
-          cp -f ${{ steps.attest.outputs.bundle-path }} ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
-
-          pause-upload \
-            ${{ steps.variable.outputs.dist-tarball }} \
-            ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
           gh release create --repo ${{ github.repository }} ${{ github.ref }} \
             --notes ${{ steps.attest.outputs.attestation-url }} \
-            ${{ steps.variable.outputs.dist-tarball }} \
-            ${{ steps.variable.outputs.dist-tarball }}.sigstore.json
+            ${{ steps.artifact.outputs.dist-tarball }} \
+            ${{ steps.artifact.outputs.dist-tarball }}.sigstore.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PAUSE_TOKEN: ${{ secrets.PAUSE_TOKEN }}
+      - uses: skaji/action-pause-upload@v1
+        with:
+          files: |
+            ${{ steps.artifact.outputs.dist-tarball }}
+            ${{ steps.artifact.outputs.dist-tarball }}.sigstore.json
+          pause-token: ${{ secrets.PAUSE_TOKEN }}
