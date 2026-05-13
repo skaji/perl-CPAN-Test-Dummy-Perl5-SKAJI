@@ -1,3 +1,13 @@
+package NextRelease {
+    use v5.42;
+    use Moose;
+    extends 'Dist::Zilla::Plugin::NextRelease';
+    sub after_release ($self, @) {
+        # noop
+    }
+}
+$INC{"NextRelease.pm"} = __FILE__;
+
 my @prereq = (
     [ Prereqs => 'ConfigureRequires' ] => [
         'Module::Build::Tiny' => '0.051',
@@ -14,7 +24,7 @@ my @plugin = (
     'CopyFilesFromBuild' => [ copy => 'META.json', copy => 'Changes' ],
     'VersionFromMainModule' => [],
     'ReversionOnRelease' => [ prompt => 1 ],
-    'lib' => [ lib => 'author' ],
+    # 'lib' => [ lib => 'author' ],
     '=NextRelease' => [ format => '%v  %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T' ],
     'Git::Check' => [ allow_dirty => 'Changes', allow_dirty => 'META.json' ],
     'GithubMeta' => [ issues => 1 ],
