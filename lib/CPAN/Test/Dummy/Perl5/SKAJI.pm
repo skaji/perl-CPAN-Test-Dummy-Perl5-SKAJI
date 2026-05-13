@@ -1,9 +1,9 @@
-package CPAN::Test::Dummy::Perl5::SKAJI v0.0.19;
+package CPAN::Test::Dummy::Perl5::SKAJI v0.0.20;
 use v5.24;
 use warnings;
 use experimental qw(lexical_subs signatures);
 
-our $TRIAL = 0;
+our $TRIAL = 1;
 
 1;
 __END__
