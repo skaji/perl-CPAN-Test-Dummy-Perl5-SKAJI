@@ -3,6 +3,8 @@ use v5.24;
 use warnings;
 use experimental qw(lexical_subs signatures);
 
+our $TRIAL = 0;
+
 1;
 __END__
 
