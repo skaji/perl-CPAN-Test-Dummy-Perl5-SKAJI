@@ -1,9 +1,30 @@
+use v5.42;
+
+package Trial {
+    use Moose;
+    with 'Dist::Zilla::Role::FileMunger';
+    sub munge_file ($self, $file) {
+        return if !($ENV{DZIL_RELEASING} && $file->name eq $self->zilla->main_module->name);
+        my @line;
+        for my $line (split /\n/, $file->content, -1) {
+            if ($line =~ /^our \$TRIAL/) {
+                my $trial_line = sprintf 'our $TRIAL = %d;', $self->zilla->is_trial ? 1 : 0;
+                push @line, $trial_line;
+            } else {
+                push @line, $line;
+            }
+        }
+        $file->content(join "\n", @line);
+    }
+    $INC{"Trial.pm"} = __FILE__;
+}
+
 package NextRelease {
     use Moose;
     extends 'Dist::Zilla::Plugin::NextRelease';
     sub after_release ($self, @) {} # noop
+    $INC{"NextRelease.pm"} = __FILE__;
 }
-$INC{"NextRelease.pm"} = __FILE__;
 
 my @prereq = (
     [ Prereqs => 'ConfigureRequires' ] => [
