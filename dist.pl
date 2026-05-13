@@ -27,7 +27,7 @@ my @plugin = (
     'Metadata' => [ x_static_install => 1 ],
     'Git::Contributors' => [],
 
-    # 'CheckChangesHasContent' => [],
+    'CheckChangesHasContent' => [],
     'ConfirmRelease' => [],
     # 'UploadToCPAN' => [],
     'FakeRelease' => [],
