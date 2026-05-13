@@ -1,10 +1,7 @@
 package NextRelease {
-    use v5.42;
     use Moose;
     extends 'Dist::Zilla::Plugin::NextRelease';
-    sub after_release ($self, @) {
-        # noop
-    }
+    sub after_release ($self, @) {} # noop
 }
 $INC{"NextRelease.pm"} = __FILE__;
 
@@ -24,22 +21,18 @@ my @plugin = (
     'CopyFilesFromBuild' => [ copy => 'META.json', copy => 'Changes' ],
     'VersionFromMainModule' => [],
     'ReversionOnRelease' => [ prompt => 1 ],
-    # 'lib' => [ lib => 'author' ],
     '=NextRelease' => [ format => '%v  %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T' ],
     'Git::Check' => [ allow_dirty => 'Changes', allow_dirty => 'META.json' ],
     'GithubMeta' => [ issues => 1 ],
     'ReadmeAnyFromPod' => [ type => 'markdown', filename => 'README.md', location => 'root' ],
     'MetaProvides::Package' => [ inherit_version => 0, inherit_missing => 0 ],
     'PruneFiles' => [ filename => 'dist.pl', filename => 'README.md', match => '^(xt|author|maint|example|eg)/' ],
-    # 'GitHubREADME::Badge' => [ badges => 'github_actions/test.yml' ],
-    # 'GenerateFile' => [ filename => 'Build.PL', content => "use Module::Build::Tiny;\nBuild_PL();" ],
     'MetaJSON' => [],
     'Metadata' => [ x_static_install => 1 ],
     'Git::Contributors' => [],
 
     'CheckChangesHasContent' => [],
     'ConfirmRelease' => [],
-    # 'UploadToCPAN' => [],
     'FakeRelease' => [],
     'CopyFilesFromRelease' => [ match => '\.pm$' ],
     'Git::Commit' => [ commit_msg => '%v', allow_dirty => 'Changes', allow_dirty => 'META.json', allow_dirty_match => '\.pm$' ],
@@ -49,7 +42,5 @@ my @plugin = (
 
 my @config = (
     name => 'CPAN-Test-Dummy-Perl5-SKAJI',
-    author => 'Shoichi Kaji <skaji@cpan.org>',
-    copyright_holder => 'Shoichi Kaji',
     [ @prereq, @plugin ],
 );
