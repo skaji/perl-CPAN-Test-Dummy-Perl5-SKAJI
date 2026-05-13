@@ -32,7 +32,7 @@
          "version" : "v0.0.19"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/skaji/perl-CPAN-Test-Dummy-Perl5-SKAJI/issues"
