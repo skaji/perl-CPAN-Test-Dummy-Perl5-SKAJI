@@ -38,10 +38,11 @@ jobs:
       - name: Prepare variables
         id: var
         run: echo dist=$(jq -r '"\(.name)-\(.version)\(if .release_status == "stable" then "" else "-TRIAL" end)"' META.json) >> $GITHUB_OUTPUT
-      - uses: skaji/action-generate-tarball@v1
-        with:
-          top-directory: ${{ steps.var.outputs.dist }}
-          exclude: ^(\.|dist\.pl|README\.md|xt|author|maint|example|eg)
+      - name: Generate tarball
+        run: |
+          git archive --format=tar \
+            --prefix=${{ steps.var.outputs.dist }}/ \
+            'HEAD^{tree}' | gzip -n -9 > ${{ steps.var.outputs.dist }}.tar.gz
       - uses: actions/attest@v4
         id: attest
         with:
