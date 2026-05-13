@@ -22,6 +22,13 @@ CPAN::Test::Dummy::Perl5::SKAJI - a test dummy distribution
 
 CPAN::Test::Dummy::Perl5::SKAJI is a test dummy distribution.
 
+=head1 ARTIFACT ATTESTATIONS
+
+GitHub Artifact Attestations are generated for release tarballs uploaded to
+CPAN. If you care about provenance for the uploaded tarballs, see:
+
+L<https://github.com/skaji/perl-CPAN-Test-Dummy-Perl5-SKAJI/attestations>
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2026 Shoichi Kaji <skaji@cpan.org>
