@@ -29,6 +29,7 @@ my @plugin = (
     # 'CheckChangesHasContent' => [],
     # 'ConfirmRelease' => [],
     # 'UploadToCPAN' => [],
+    'FakeRelease' => [],
     'CopyFilesFromRelease' => [ match => '\.pm$' ],
     'Git::Commit' => [ commit_msg => '%v', allow_dirty => 'Changes', allow_dirty => 'META.json', allow_dirty_match => '\.pm$' ],
     # 'Git::Tag' => [ tag_format => '%v', tag_message => '%v' ],
