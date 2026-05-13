@@ -1,0 +1,9 @@
+README.md export-ignore
+dist.pl export-ignore
+.gitignore export-ignore
+.github/ export-ignore
+xt/ export-ignore
+author/ export-ignore
+maint/ export-ignore
+eg/ export-ignore
+example/ export-ignore
