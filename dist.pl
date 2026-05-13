@@ -16,14 +16,12 @@ package Trial {
         }
         $file->content(join "\n", @line);
     }
-    $INC{"Trial.pm"} = __FILE__;
 }
 
 package NextRelease {
     use Moose;
     extends 'Dist::Zilla::Plugin::NextRelease';
     sub after_release ($self, @) {} # noop
-    $INC{"NextRelease.pm"} = __FILE__;
 }
 
 my @prereq = (
@@ -43,6 +41,7 @@ my @plugin = (
     'VersionFromMainModule' => [],
     'ReversionOnRelease' => [ prompt => 1 ],
     '=NextRelease' => [ format => '%v  %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T' ],
+    '=Trial' => [],
     'Git::Check' => [ allow_dirty => 'Changes', allow_dirty => 'META.json' ],
     'GithubMeta' => [ issues => 1 ],
     'ReadmeAnyFromPod' => [ type => 'markdown', filename => 'README.md', location => 'root' ],
