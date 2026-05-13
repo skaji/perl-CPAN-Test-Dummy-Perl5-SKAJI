@@ -46,7 +46,6 @@ my @plugin = (
     'GithubMeta' => [ issues => 1 ],
     'ReadmeAnyFromPod' => [ type => 'markdown', filename => 'README.md', location => 'root' ],
     'MetaProvides::Package' => [ inherit_version => 0, inherit_missing => 0 ],
-    'PruneFiles' => [ filename => 'dist.pl', filename => 'README.md', match => '^(xt|author|maint|example|eg)/' ],
     'MetaJSON' => [],
     'Metadata' => [ x_static_install => 1 ],
     'Git::Contributors' => [],
